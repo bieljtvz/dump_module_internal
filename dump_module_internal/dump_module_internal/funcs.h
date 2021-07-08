@@ -85,7 +85,7 @@ bool funcs::dump_user_module(const char* module)
 
     // Alocar um buffer suficientemente grande para o módulo
     //
-    auto buf = new char[(DWORD)module_info.SizeOfImage];
+    auto buf = new char[(DWORD_PTR)module_info.SizeOfImage];
 
     if (!buf)
         return 0;
@@ -126,7 +126,7 @@ bool funcs::dump_user_module(const char* module)
 
         // Arrumar o image base para a base do módulo que será dumpado
         //
-        pimage_nt_headers->OptionalHeader.ImageBase = (DWORD)module_info.lpBaseOfDll;
+        pimage_nt_headers->OptionalHeader.ImageBase = (DWORD_PTR)module_info.lpBaseOfDll;
     }
 
     // Este é um PE 32. Utilizar a versão em 32 bits dos nt headers
@@ -149,7 +149,7 @@ bool funcs::dump_user_module(const char* module)
 
         // Arrumar o image base para a base do módulo que será dumpado
         //
-        pimage_nt_headers32->OptionalHeader.ImageBase = (DWORD)(module_info.lpBaseOfDll);
+        pimage_nt_headers32->OptionalHeader.ImageBase = (DWORD_PTR)(module_info.lpBaseOfDll);
     }
 
     // Não suportado
@@ -179,7 +179,7 @@ bool funcs::dump_user_module(const char* module)
     // Escrever os conteúdos do buffer para o arquivo
         //
     DWORD Ip1, Ip2;
-    WriteFile(hFile, buf, (DWORD)bytes_read, &Ip1, nullptr);
+    WriteFile(hFile, buf, (DWORD_PTR)bytes_read, &Ip1, nullptr);
 
     // Fechar o handle aberto para o arquivo. Por mais que o Windows garante que não terão leak de recursos após o encerramento do processo, é uma boa prática liberar tudo
     //
